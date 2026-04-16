@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Contato</title>
+</head>
+<body>
+    <header>
+        <h1>Formulário de Contato</h1>
+    </header>
+
+    <main>
+        <p>Por favor, preencha o formulário abaixo e clique no botão Enviar Mensagem. Agradecemos por seu contato.</p>
+        
+        <form id="contato-form" action="/submit" method="POST">
+            <fieldset>
+                <legend>Dados Básicos</legend>
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required placeholder="seunome@dominio.com.br">
+                
+                <label for="website">Website:</label>
+                <input type="url" id="website" name="website">
+            </fieldset>
+            
+            <fieldset>
+                <legend>Formação Acadêmica</legend>
+                <label><input type="radio" name="curso" id="cc" value="cc"> Ciência da Computação</label>
+                <label><input type="radio" name="curso" id="es" value="es"> Engenharia de Software</label>
+                <label><input type="radio" name="curso" id="ec" value="ec"> Engenharia da Computação</label>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Linguagens de Programação</legend>
+                <label><input type="checkbox" id="java" name="ling" value="java"> Java</label>
+                <label><input type="checkbox" id="c" name="ling" value="c"> C</label>
+                <label><input type="checkbox" id="cpp" name="ling" value="cpp"> C++</label>
+                <label><input type="checkbox" id="perl" name="ling" value="perl"> Perl</label>
+                <label><input type="checkbox" id="python" name="ling" value="python"> Python</label>
+                <label><input type="checkbox" id="js" name="ling" value="js"> JavaScript</label>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Dados Pessoais</legend>
+                <label for="cor">Cor Favorita:</label>
+                <input type="color" id="cor" name="cor">
+                
+                <label for="ddn">Data de Nascimento:</label>
+                <input type="date" id="ddn" name="ddn">
+                
+                <label for="anoCurso">Ano de Entrada em seu Curso:</label>
+                <input type="number" id="anoCurso" name="anoCurso" min="1980" max="2024">
+                
+                <label for="nota">Avaliação do Site:</label>
+                <input type="range" id="nota" name="nota" min="0" max="10">
+            </fieldset>
+            
+            <fieldset>
+                <legend>Área de Atuação Profissional</legend>
+                <select id="area" name="area">
+                    <option value="1">Banco de Dados</option>
+                    <option value="2">Teoria dos jogos</option>
+                    <option value="3">Análise de Dados</option>
+                    <option value="5">Programação Web</option>
+                    <option value="6">Segurança da Informação</option>
+                    <option value="7">Professor Universitário</option>
+                </select>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Submeta seu Currículo</legend>
+                <input type="file" id="curriculo" name="curriculo">
+            </fieldset>
+            
+            <fieldset>
+                <legend>Mensagem</legend>
+                <textarea id="mensagem" name="mensagem" rows="4" cols="30">Este é o valor padrão!</textarea>
+            </fieldset>
+            
+            <div>
+                <input type="reset" value="Resetar Dados">
+                <input type="submit" value="Enviar Mensagem">
+            </div>
+        </form>
+    </main>
+</body>
+</html>
