@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url('nebulosa.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    padding-left: 8%;
+    font-family: "Times New Roman", Times, serif; 
+}
+
+.caixa-info {
+    background-color: #000000;
+    border: 4px solid #c97e3f;
+    border-radius: 15px;
+    color: #ffffff;
+    width: 280px;
+    padding: 30px 25px;
+    text-align: center;
+}
+
+.caixa-info h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.caixa-info p {
+    font-size: 15px;
+    line-height: 1.4;
+}
