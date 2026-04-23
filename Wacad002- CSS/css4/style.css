@@ -1,4 +1,4 @@
-/* Reseta as margens padrão do navegador */
+
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +8,7 @@
 body {
     font-family: sans-serif;
     padding: 20px;
-    background-color: #f4f4f4; /* Fundo levemente cinza para destacar os containers */
+    background-color: #f4f4f4; 
 }
 
 h2 {
@@ -16,25 +16,22 @@ h2 {
     color: #333;
 }
 
-/* Configuração base do Grid Container */
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Divide o espaço em 4 colunas iguais */
-    gap: 15px; /* Espaçamento entre as caixas */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 15px; 
     background-color: white;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    max-width: 800px; /* Limita a largura para ficar parecido com a imagem */
+    max-width: 800px; 
 }
 
-/* Estilos base das caixas */
 .box {
     border-radius: 8px;
-    min-height: 120px; /* Altura mínima para as caixas terem volume */
+    min-height: 120px; 
 }
 
-/* Cores (aproximadas da imagem) */
 .red    { background-color: #990000; }
 .blue   { background-color: #000099; }
 .green  { background-color: #006600; }
