@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Editando arquivo original
+=======
+editando o arquivo 3 para teste
+>>>>>>> origin/main
