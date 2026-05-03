@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gerador de Histórias: Tema Animação</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Gerador de Aventuras Animadas</h1>
+      
+      <div class="input-group">
+        <label for="custom-name">Nome do Protagonista:</label>
+        <input id="custom-name" type="text" placeholder="Ex: Naruto" />
+      </div>
+
+      <fieldset>
+        <legend>Unidades de Medida:</legend>
+        <div>
+          <input id="br" type="radio" name="unit" value="br" checked />
+          <label for="br">Brasil (kg)</label>
+        </div>
+        <div>
+          <input id="uk" type="radio" name="unit" value="uk" />
+          <label for="uk">EUA/UK (lb)</label>
+        </div>
+      </fieldset>
+
+      <button class="generate">Vamos Lá!</button>
+
+      <p class="story"></p>
+    </main>
+
+    <script src="main.js"></script>
+  </body>
+</html>
