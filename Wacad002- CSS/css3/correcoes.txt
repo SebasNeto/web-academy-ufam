@@ -1,0 +1,2 @@
+NOTA: 4.0
+FEEDBACK: Seu código não usou posicionamento relativo. Seu código não usou as propriedades de posicionamento: left ou right, top ou bottom.
