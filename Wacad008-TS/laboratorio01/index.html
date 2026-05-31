@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h2>Lembretes</h2>
+    
+    <div class="form-box">
+        <input type="hidden" id="lembreteId">
+        
+        <div class="campo">
+            <label>Título *</label>
+            <input type="text" id="tituloTxt" required>
+        </div>
+        
+        <div class="campo">
+            <label>Data Limite</label>
+            <input type="datetime-local" id="dataFim">
+        </div>
+
+        <div class="campo">
+            <label>Descrição</label>
+            <textarea id="descTxt" rows="2"></textarea>
+        </div>
+
+        <button id="btnSave" class="btn">Salvar</button>
+        <button id="btnCancel" class="btn">Cancelar</button>
+    </div>
+
+    <div id="lista"></div>
+
+    <script src="aplicacao.js"></script>
+</body>
+</html>
