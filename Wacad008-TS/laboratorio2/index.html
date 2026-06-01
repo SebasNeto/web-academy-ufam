@@ -1,58 +1,54 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estatísticas da Turma</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turma de Educação Física</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Turma Web Academy
-      </h1>
-    </header>
 
-    <section class="stats-panel">
-      <h2>Estatísticas da Turma</h2>
-      <div class="stats-grid">
-        <div class="stat-card">Total de Alunos: <span id="stat-total">0</span></div>
-        <div class="stat-card">Média de Idade: <span id="stat-idade">0</span> anos</div>
-        <div class="stat-card">Média de Altura: <span id="stat-altura">0</span> m</div>
-        <div class="stat-card">Média de Peso: <span id="stat-peso">0</span> kg</div>
-      </div>
-    </section>
+    <div class="container">
+        <h1>Turma Web Academy</h1>
 
-    <section class="form-panel">
-      <h2 id="form-title">Adicionar Aluno</h2>
-      <form id="aluno-form">
-        <input type="hidden" id="aluno-id">
-        <input type="text" id="nome" placeholder="Nome Completo" required>
-        <input type="number" id="idade" placeholder="Idade" required min="1">
-        <input type="number" id="altura" placeholder="Altura (ex: 1.75)" step="0.01" required min="0.5">
-        <input type="number" id="peso" placeholder="Peso (ex: 70.5)" step="0.1" required min="10">
-        <button type="submit" id="submit-btn">Salvar</button>
-        <button type="button" id="cancel-btn" style="display: none;">Cancelar</button>
-      </form>
-    </section>
+        <div class="formulario">
+            <input type="text" id="nome" placeholder="Nome Completo">
 
-    <section class="list-panel">
-      <h2>Lista de Alunos</h2>
-      <table id="alunos-table">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Idade</th>
-            <th>Altura</th>
-            <th>Peso</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="alunos-tbody">
-        </tbody>
-      </table>
-    </section>
-  </div>
-  <script src="app.js"></script>
+            <input type="number" id="idade" placeholder="Idade">
+
+            <input type="number" id="altura" step="0.01" placeholder="Altura (m)">
+
+            <input type="number" id="peso" step="0.01" placeholder="Peso (kg)">
+
+            <button id="btnSalvar">Adicionar Aluno</button>
+        </div>
+
+        <div class="estatisticas">
+            <h2>Estatísticas da Turma</h2>
+
+            <p>Total de alunos: <span id="numAlunos">0</span></p>
+            <p>Média das idades: <span id="mediaIdades">0</span></p>
+            <p>Média das alturas: <span id="mediaAlturas">0</span></p>
+            <p>Média dos pesos: <span id="mediaPesos">0</span></p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Altura</th>
+                    <th>Peso</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabelaAlunos"></tbody>
+        </table>
+    </div>
+
+    <script src="app.js"></script>
+
 </body>
 </html>

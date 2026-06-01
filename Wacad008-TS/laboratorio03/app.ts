@@ -1,148 +1,224 @@
-class Aluno {
-    constructor(
-        public id: number,
-        public nomeCompleto: string,
-        public idade: number,
-        public altura: number,
-        public peso: number
-    ) {}
+interface IProduto {
+    getTipo(): string;
+    getValor(): number;
+    getDetalhe(): string;
 }
 
-class Turma {
+abstract class Produto implements IProduto {
+
     constructor(
-        public id: number,
-        public nome: string,
-        public listaDeAlunos: Aluno[] = []
+        protected modelo: string,
+        protected fabricante: string,
+        protected valor: number
     ) {}
 
-    adicionarAluno(aluno: Aluno): void {
-        this.listaDeAlunos.push(aluno);
+    getValor(): number {
+        return this.valor;
     }
 
-    editarAluno(id: number, dadosAtualizados: Partial<Aluno>): void {
-        const index = this.listaDeAlunos.findIndex(a => a.id === id);
-        if (index !== -1) {
-            this.listaDeAlunos[index] = { ...this.listaDeAlunos[index], ...dadosAtualizados };
+    getModelo(): string {
+        return this.modelo;
+    }
+
+    getFabricante(): string {
+        return this.fabricante;
+    }
+
+    abstract getTipo(): string;
+    abstract getDetalhe(): string;
+}
+
+class TV extends Produto {
+
+    constructor(
+        modelo: string,
+        fabricante: string,
+        valor: number,
+        private resolucao: string
+    ) {
+        super(modelo, fabricante, valor);
+    }
+
+    getTipo(): string {
+        return "TV";
+    }
+
+    getDetalhe(): string {
+        return this.resolucao;
+    }
+}
+
+class Celular extends Produto {
+
+    constructor(
+        modelo: string,
+        fabricante: string,
+        valor: number,
+        private memoria: string
+    ) {
+        super(modelo, fabricante, valor);
+    }
+
+    getTipo(): string {
+        return "Celular";
+    }
+
+    getDetalhe(): string {
+        return this.memoria;
+    }
+}
+
+class Bicicleta extends Produto {
+
+    constructor(
+        modelo: string,
+        fabricante: string,
+        valor: number,
+        private aro: string
+    ) {
+        super(modelo, fabricante, valor);
+    }
+
+    getTipo(): string {
+        return "Bicicleta";
+    }
+
+    getDetalhe(): string {
+        return this.aro;
+    }
+}
+
+class Carrinho<T extends IProduto> {
+
+    private produtos: T[] = [];
+
+    adicionar(produto: T): void {
+        this.produtos.push(produto);
+    }
+
+    remover(indice: number): void {
+        this.produtos.splice(indice, 1);
+    }
+
+    listar(): T[] {
+        return this.produtos;
+    }
+
+    getQuantidade(): number {
+        return this.produtos.length;
+    }
+
+    getValorTotal(): number {
+        let total = 0;
+
+        for (const produto of this.produtos) {
+            total += produto.getValor();
         }
-    }
 
-    removerAluno(id: number): void {
-        this.listaDeAlunos = this.listaDeAlunos.filter(a => a.id !== id);
-    }
-
-    getNumAlunos(): number {
-        return this.listaDeAlunos.length;
-    }
-
-    getMediaIdades(): number {
-        if (this.getNumAlunos() === 0) return 0;
-        const soma = this.listaDeAlunos.reduce((acc, aluno) => acc + aluno.idade, 0);
-        return soma / this.getNumAlunos();
-    }
-
-    getMediaAlturas(): number {
-        if (this.getNumAlunos() === 0) return 0;
-        const soma = this.listaDeAlunos.reduce((acc, aluno) => acc + aluno.altura, 0);
-        return soma / this.getNumAlunos();
-    }
-
-    getMediaPesos(): number {
-        if (this.getNumAlunos() === 0) return 0;
-        const soma = this.listaDeAlunos.reduce((acc, aluno) => acc + aluno.peso, 0);
-        return soma / this.getNumAlunos();
+        return total;
     }
 }
 
-const turma = new Turma(1, "Educação Física");
-let proximoId = 1;
+const carrinho = new Carrinho<IProduto>();
 
-const form = document.getElementById('aluno-form') as HTMLFormElement;
-const inputId = document.getElementById('aluno-id') as HTMLInputElement;
-const inputNome = document.getElementById('nome') as HTMLInputElement;
-const inputIdade = document.getElementById('idade') as HTMLInputElement;
-const inputAltura = document.getElementById('altura') as HTMLInputElement;
-const inputPeso = document.getElementById('peso') as HTMLInputElement;
-const btnCancel = document.getElementById('cancel-btn') as HTMLButtonElement;
-const formTitle = document.getElementById('form-title') as HTMLHeadingElement;
+const tipoProduto = document.getElementById("tipoProduto") as HTMLSelectElement;
+const modelo = document.getElementById("modelo") as HTMLInputElement;
+const fabricante = document.getElementById("fabricante") as HTMLInputElement;
+const valor = document.getElementById("valor") as HTMLInputElement;
+const atributo = document.getElementById("atributo") as HTMLInputElement;
 
-const statTotal = document.getElementById('stat-total') as HTMLSpanElement;
-const statIdade = document.getElementById('stat-idade') as HTMLSpanElement;
-const statAltura = document.getElementById('stat-altura') as HTMLSpanElement;
-const statPeso = document.getElementById('stat-peso') as HTMLSpanElement;
-const tbody = document.getElementById('alunos-tbody') as HTMLTableSectionElement;
+const listaProdutos = document.getElementById("listaProdutos") as HTMLElement;
+
+const quantidade = document.getElementById("quantidade") as HTMLElement;
+const valorTotal = document.getElementById("valorTotal") as HTMLElement;
 
 function atualizarDisplay(): void {
-    statTotal.textContent = turma.getNumAlunos().toString();
-    statIdade.textContent = turma.getMediaIdades().toFixed(1);
-    statAltura.textContent = turma.getMediaAlturas().toFixed(2);
-    statPeso.textContent = turma.getMediaPesos().toFixed(1);
-    renderizarTabela();
-}
 
-function renderizarTabela(): void {
-    tbody.innerHTML = '';
-    turma.listaDeAlunos.forEach(aluno => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${aluno.nomeCompleto}</td>
-            <td>${aluno.idade}</td>
-            <td>${aluno.altura.toFixed(2)}</td>
-            <td>${aluno.peso.toFixed(1)}</td>
+    quantidade.textContent =
+        carrinho.getQuantidade().toString();
+
+    valorTotal.textContent =
+        carrinho.getValorTotal().toFixed(2);
+
+    listaProdutos.innerHTML = "";
+
+    carrinho.listar().forEach((produto, indice) => {
+
+        const linha = document.createElement("tr");
+
+        linha.innerHTML = `
+            <td>${produto.getTipo()}</td>
+            <td>${(produto as any).getModelo()}</td>
+            <td>${(produto as any).getFabricante()}</td>
+            <td>R$ ${produto.getValor().toFixed(2)}</td>
+            <td>${produto.getDetalhe()}</td>
             <td>
-                <button class="btn-edit" onclick="prepararEdicao(${aluno.id})">Editar</button>
-                <button class="btn-delete" onclick="apagarAluno(${aluno.id})">Apagar</button>
+                <button
+                    class="excluir"
+                    onclick="removerProduto(${indice})">
+                    Remover
+                </button>
             </td>
         `;
-        tbody.appendChild(tr);
+
+        listaProdutos.appendChild(linha);
     });
 }
 
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const idAtual = inputId.value ? parseInt(inputId.value) : null;
-    const nome = inputNome.value;
-    const idade = parseInt(inputIdade.value);
-    const altura = parseFloat(inputAltura.value);
-    const peso = parseFloat(inputPeso.value);
+(document.getElementById("btnAdicionar") as HTMLButtonElement)
+.addEventListener("click", () => {
 
-    if (idAtual) {
-        turma.editarAluno(idAtual, { nomeCompleto: nome, idade, altura, peso });
-    } else {
-        const novoAluno = new Aluno(proximoId++, nome, idade, altura, peso);
-        turma.adicionarAluno(novoAluno);
+    const tipo = tipoProduto.value;
+    const valorProduto = Number(valor.value);
+
+    if (
+        modelo.value === "" ||
+        fabricante.value === "" ||
+        atributo.value === "" ||
+        valorProduto <= 0
+    ) {
+        alert("Preencha todos os campos.");
+        return;
     }
 
-    limparFormulario();
+    let produto: IProduto;
+
+    if (tipo === "tv") {
+        produto = new TV(
+            modelo.value,
+            fabricante.value,
+            valorProduto,
+            atributo.value
+        );
+    } else if (tipo === "celular") {
+        produto = new Celular(
+            modelo.value,
+            fabricante.value,
+            valorProduto,
+            atributo.value
+        );
+    } else {
+        produto = new Bicicleta(
+            modelo.value,
+            fabricante.value,
+            valorProduto,
+            atributo.value
+        );
+    }
+
+    carrinho.adicionar(produto);
+
+    modelo.value = "";
+    fabricante.value = "";
+    valor.value = "";
+    atributo.value = "";
+
     atualizarDisplay();
 });
 
-btnCancel.addEventListener('click', limparFormulario);
-
-(window as any).prepararEdicao = (id: number) => {
-    const aluno = turma.listaDeAlunos.find(a => a.id === id);
-    if (aluno) {
-        inputId.value = aluno.id.toString();
-        inputNome.value = aluno.nomeCompleto;
-        inputIdade.value = aluno.idade.toString();
-        inputAltura.value = aluno.altura.toString();
-        inputPeso.value = aluno.peso.toString();
-        formTitle.textContent = "Editar Aluno";
-        btnCancel.style.display = "inline-block";
-    }
+(window as any).removerProduto = (indice: number): void => {
+    carrinho.remover(indice);
+    atualizarDisplay();
 };
-
-(window as any).apagarAluno = (id: number) => {
-    if (confirm("Tem certeza que deseja apagar este aluno?")) {
-        turma.removerAluno(id);
-        atualizarDisplay();
-    }
-};
-
-function limparFormulario(): void {
-    form.reset();
-    inputId.value = '';
-    formTitle.textContent = "Adicionar Aluno";
-    btnCancel.style.display = "none";
-}
 
 atualizarDisplay();
