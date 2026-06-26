@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Autor {
+  idAutor        Int       @id @default(autoincrement()) @map("id_autor")
+  nome           String    @db.VarChar(150)
+  dataNascimento DateTime? @map("data_nascimento")
+  paisNascimento String?   @map("pais_nascimento") @db.VarChar(100)
+  notaBiografica String?   @map("nota_biografica") @db.Text
+
+  autorias Autoria[]
+
+  @@map("autores")
+}
+
+model Livro {
+  codLivro              Int     @id @default(autoincrement()) @map("cod_livro")
+  titulo                String  @db.VarChar(200)
+  idiomaOriginal        String? @map("idioma_original") @db.VarChar(80)
+  anoPrimeiraPublicacao Int?    @map("ano_primeira_publicacao")
+
+  autorias Autoria[]
+  edicoes  Edicao[]
+
+  @@map("livros")
+}
+
+model Editora {
+  idEditora    Int     @id @default(autoincrement()) @map("id_editora")
+  nomeFantasia String  @map("nome_fantasia") @db.VarChar(150)
+  endereco     String? @db.VarChar(255)
+  telefone     String? @db.VarChar(30)
+
+  edicoes Edicao[]
+
+  @@map("editoras")
+}
+
+model Edicao {
+  isbn       String  @id @db.VarChar(20)
+  anoEdicao  Int     @map("ano_edicao")
+  preco      Decimal @db.Decimal(10, 2)
+  numPaginas Int     @map("num_paginas")
+  qtdEstoque Int     @map("qtd_estoque")
+
+  codLivro  Int @map("cod_livro")
+  idEditora Int @map("id_editora")
+
+  livro   Livro   @relation(fields: [codLivro], references: [codLivro])
+  editora Editora @relation(fields: [idEditora], references: [idEditora])
+
+  @@map("edicoes")
+}
+
+model Autoria {
+  idAutoria         Int     @id @default(autoincrement()) @map("id_autoria")
+  ordemAutoria      Int?    @map("ordem_autoria")
+  observacaoCredito String? @map("observacao_credito") @db.VarChar(255)
+
+  idAutor  Int @map("id_autor")
+  codLivro Int @map("cod_livro")
+
+  autor Autor @relation(fields: [idAutor], references: [idAutor])
+  livro Livro @relation(fields: [codLivro], references: [codLivro])
+
+  @@unique([idAutor, codLivro])
+  @@map("autorias")
+}
