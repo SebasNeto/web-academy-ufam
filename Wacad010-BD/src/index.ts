@@ -2,93 +2,79 @@ import { Prisma } from "../generated/prisma/client";
 import { prisma } from "./lib/prisma";
 
 async function main() {
-  await prisma.autoria.deleteMany();
-  await prisma.edicao.deleteMany();
-  await prisma.livro.deleteMany();
-  await prisma.autor.deleteMany();
-  await prisma.editora.deleteMany();
+  await prisma.itemCompra.deleteMany();
+  await prisma.numeroDeSerie.deleteMany();
+  await prisma.compra.deleteMany();
+  await prisma.produto.deleteMany();
+  await prisma.subcategoria.deleteMany();
+  await prisma.endereco.deleteMany();
+  await prisma.cliente.deleteMany();
+  await prisma.categoria.deleteMany();
 
-  const autor1 = await prisma.autor.create({
+  const categoria = await prisma.categoria.create({
     data: {
-      nome: "Machado de Assis",
-      paisNascimento: "Brasil",
-      dataNascimento: new Date("1839-06-21"),
-      notaBiografica: "Autor brasileiro do século XIX.",
+      nome: "Eletrônicos",
     },
   });
 
-  const autor2 = await prisma.autor.create({
+  const subcategoria = await prisma.subcategoria.create({
     data: {
-      nome: "José de Alencar",
-      paisNascimento: "Brasil",
-      dataNascimento: new Date("1829-05-01"),
-      notaBiografica: "Romancista brasileiro.",
+      nome: "Smartphones",
+      idCat: categoria.idCat,
     },
   });
 
-  const editora = await prisma.editora.create({
+  const cliente = await prisma.cliente.create({
     data: {
-      nomeFantasia: "Editora Clássicos BR",
-      endereco: "Manaus - AM",
-      telefone: "(92) 99999-9999",
+      cpf: "123.456.789-00",
+      nomeCompleto: "João da Silva",
+      dataNascimento: new Date("1998-05-10"),
+      email: "joao@email.com",
+      celular: "(92) 99999-9999",
     },
   });
 
-  const livro = await prisma.livro.create({
+  const endereco = await prisma.endereco.create({
     data: {
-      titulo: "Dom Casmurro",
-      idiomaOriginal: "Português",
-      anoPrimeiraPublicacao: 1899,
+      cep: "69000-000",
+      rua: "Rua das Flores",
+      cidade: "Manaus",
+      cpfClientes: cliente.cpf,
     },
   });
 
-  await prisma.autoria.create({
+  const produto = await prisma.produto.create({
     data: {
-      idAutor: autor1.idAutor,
-      codLivro: livro.codLivro,
-      ordemAutoria: 1,
-      observacaoCredito: "Autor principal",
+      fabricante: "Samsung",
+      produto: "Galaxy A55",
+      quantidadeDisponivel: 20,
+      precoBase: new Prisma.Decimal("1899.90"),
+      idSub: subcategoria.idSub,
     },
   });
 
-  await prisma.edicao.create({
+  await prisma.numeroDeSerie.create({
     data: {
-      isbn: "9788535910663",
-      anoEdicao: 2020,
-      preco: new Prisma.Decimal("49.90"),
-      numPaginas: 256,
-      qtdEstoque: 15,
-      codLivro: livro.codLivro,
-      idEditora: editora.idEditora,
+      idProduto: produto.idProduto,
+      numeroSerie: "SN-GALAXY-A55-001",
     },
   });
 
-  const livro2 = await prisma.livro.create({
+  const compra = await prisma.compra.create({
     data: {
-      titulo: "Iracema",
-      idiomaOriginal: "Português",
-      anoPrimeiraPublicacao: 1865,
+      formaPagamento: "Cartão de crédito",
+      totalCalculado: new Prisma.Decimal("1799.90"),
+      desconto: new Prisma.Decimal("100.00"),
+      dataHoraCompra: new Date(),
+      cpfClientes: cliente.cpf,
+      idEndereco: endereco.idEndereco,
     },
   });
 
-  await prisma.autoria.create({
+  await prisma.itemCompra.create({
     data: {
-      idAutor: autor2.idAutor,
-      codLivro: livro2.codLivro,
-      ordemAutoria: 1,
-      observacaoCredito: "Autor principal",
-    },
-  });
-
-  await prisma.edicao.create({
-    data: {
-      isbn: "9788503012304",
-      anoEdicao: 2019,
-      preco: new Prisma.Decimal("39.90"),
-      numPaginas: 192,
-      qtdEstoque: 10,
-      codLivro: livro2.codLivro,
-      idEditora: editora.idEditora,
+      idCompra: compra.idCompra,
+      idProduto: produto.idProduto,
     },
   });
 

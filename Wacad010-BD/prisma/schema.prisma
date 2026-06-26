@@ -7,68 +7,107 @@ datasource db {
   provider = "mysql"
 }
 
-model Autor {
-  idAutor        Int       @id @default(autoincrement()) @map("id_autor")
-  nome           String    @db.VarChar(150)
-  dataNascimento DateTime? @map("data_nascimento")
-  paisNascimento String?   @map("pais_nascimento") @db.VarChar(100)
-  notaBiografica String?   @map("nota_biografica") @db.Text
+model Categoria {
+  idCat Int     @id @default(autoincrement()) @map("IdCat")
+  nome  String? @map("Nome") @db.VarChar(50)
 
-  autorias Autoria[]
+  subcategorias Subcategoria[]
 
-  @@map("autores")
+  @@map("categoria")
 }
 
-model Livro {
-  codLivro              Int     @id @default(autoincrement()) @map("cod_livro")
-  titulo                String  @db.VarChar(200)
-  idiomaOriginal        String? @map("idioma_original") @db.VarChar(80)
-  anoPrimeiraPublicacao Int?    @map("ano_primeira_publicacao")
+model Cliente {
+  cpf            String    @id @map("CPF") @db.VarChar(14)
+  nomeCompleto   String?   @db.VarChar(100)
+  dataNascimento DateTime? @db.Date
+  email          String?   @db.VarChar(100)
+  celular        String?   @db.VarChar(20)
 
-  autorias Autoria[]
-  edicoes  Edicao[]
+  enderecos Endereco[]
+  compras   Compra[]
 
-  @@map("livros")
+  @@map("clientes")
 }
 
-model Editora {
-  idEditora    Int     @id @default(autoincrement()) @map("id_editora")
-  nomeFantasia String  @map("nome_fantasia") @db.VarChar(150)
-  endereco     String? @db.VarChar(255)
-  telefone     String? @db.VarChar(30)
+model Endereco {
+  idEndereco Int     @id @default(autoincrement()) @map("IdEndereco")
+  cep        String? @map("CEP") @db.VarChar(10)
+  rua        String? @db.VarChar(100)
+  cidade     String? @db.VarChar(50)
 
-  edicoes Edicao[]
+  cpfClientes String? @map("CPFClientes") @db.VarChar(14)
 
-  @@map("editoras")
+  cliente Cliente? @relation(fields: [cpfClientes], references: [cpf])
+  compras Compra[]
+
+  @@index([cpfClientes], map: "CPFClientes")
+  @@map("enderecos")
 }
 
-model Edicao {
-  isbn       String  @id @db.VarChar(20)
-  anoEdicao  Int     @map("ano_edicao")
-  preco      Decimal @db.Decimal(10, 2)
-  numPaginas Int     @map("num_paginas")
-  qtdEstoque Int     @map("qtd_estoque")
+model Subcategoria {
+  idSub Int     @id @default(autoincrement()) @map("IdSub")
+  nome  String? @db.VarChar(50)
+  idCat Int?    @map("IdCat")
 
-  codLivro  Int @map("cod_livro")
-  idEditora Int @map("id_editora")
+  categoria Categoria? @relation(fields: [idCat], references: [idCat])
+  produtos  Produto[]
 
-  livro   Livro   @relation(fields: [codLivro], references: [codLivro])
-  editora Editora @relation(fields: [idEditora], references: [idEditora])
-
-  @@map("edicoes")
+  @@index([idCat], map: "IdCat")
+  @@map("subcategoria")
 }
 
-model Autoria {
-  idAutoria         Int     @id @default(autoincrement()) @map("id_autoria")
-  ordemAutoria      Int?    @map("ordem_autoria")
-  observacaoCredito String? @map("observacao_credito") @db.VarChar(255)
+model Produto {
+  idProduto            Int      @id @default(autoincrement()) @map("IdProduto")
+  fabricante           String?  @db.VarChar(50)
+  produto              String?  @db.VarChar(50)
+  quantidadeDisponivel Int?
+  precoBase            Decimal? @db.Decimal(10, 2)
+  idSub                Int?     @map("IdSub")
 
-  idAutor  Int @map("id_autor")
-  codLivro Int @map("cod_livro")
+  subcategoria   Subcategoria?   @relation(fields: [idSub], references: [idSub])
+  numerosDeSerie NumeroDeSerie[]
+  itensCompra    ItemCompra[]
 
-  autor Autor @relation(fields: [idAutor], references: [idAutor])
-  livro Livro @relation(fields: [codLivro], references: [codLivro])
+  @@index([idSub], map: "IdSub")
+  @@map("produtos")
+}
 
-  @@unique([idAutor, codLivro])
-  @@map("autorias")
+model NumeroDeSerie {
+  idProduto   Int    @map("IdProduto")
+  numeroSerie String @db.VarChar(50)
+
+  produto Produto @relation(fields: [idProduto], references: [idProduto])
+
+  @@id([idProduto, numeroSerie])
+  @@map("numerosdeserie")
+}
+
+model Compra {
+  idCompra       Int       @id @default(autoincrement()) @map("IdCompra")
+  formaPagamento String?   @db.VarChar(50)
+  totalCalculado Decimal?  @db.Decimal(10, 2)
+  desconto       Decimal?  @db.Decimal(10, 2)
+  dataHoraCompra DateTime?
+  cpfClientes    String?   @map("CPFClientes") @db.VarChar(14)
+  idEndereco     Int?      @map("IdEndereco")
+
+  cliente  Cliente?     @relation(fields: [cpfClientes], references: [cpf])
+  endereco Endereco?    @relation(fields: [idEndereco], references: [idEndereco])
+  itens    ItemCompra[]
+
+  @@index([cpfClientes], map: "CPFClientes")
+  @@index([idEndereco], map: "fk_compra_endereco")
+  @@map("compra")
+}
+
+model ItemCompra {
+  idCompra  Int @map("IdCompra")
+  idProduto Int @map("IdProduto")
+
+  compra  Compra  @relation(fields: [idCompra], references: [idCompra])
+  produto Produto @relation(fields: [idProduto], references: [idProduto])
+
+  @@id([idCompra, idProduto])
+  @@index([idProduto], map: "IdProduto")
+  @@map("itemcompra")
 }
