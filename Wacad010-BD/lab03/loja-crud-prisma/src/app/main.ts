@@ -60,9 +60,9 @@ async function main() {
   const produtoFinal = await buscarProdutoPorId(produtoCriado.idProduto);
   console.log(produtoFinal);
 
-  console.log("\nDELETE - Deletando produto...");
-  const produtoDeletado = await deletarProduto(produtoCriado.idProduto);
-  console.log(produtoDeletado);
+//   console.log("\nDELETE - Deletando produto...");
+//   const produtoDeletado = await deletarProduto(produtoCriado.idProduto);
+//   console.log(produtoDeletado);
 
   console.log("\nREAD - Lista final de produtos...");
   const listaFinal = await listarProdutos();
