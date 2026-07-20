@@ -1,0 +1,47 @@
+<div class='d-flex justify-content-between align-items-center mb-3'>
+  <h1 class='h2 mb-0'>Listagem de Produtos</h1>
+  <a
+    class='btn btn-dark'
+    href='/produto/create'
+    aria-label='Adicionar produto'
+  >Novo produto</a>
+</div>
+<div class='table-responsive'>
+  <table class='table table-striped align-middle'>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Preço</th>
+        <th>Estoque</th>
+        <th class='text-end'>Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each produtos}}
+        <tr>
+          <td>{{nome}}</td>
+          <td>R$ {{preco}}</td>
+          <td>{{estoque}}</td>
+          <td class='text-end text-nowrap'>
+            <a
+              class='btn btn-sm btn-outline-primary'
+              href='/produto/{{id}}'
+            >Visualizar</a>
+            <a
+              class='btn btn-sm btn-outline-secondary'
+              href='/produto/update/{{id}}'
+            >Editar</a>
+            <form class='d-inline' action='/produto/{{id}}' method='post'>
+              <button
+                class='btn btn-sm btn-outline-danger'
+                type='submit'
+              >Excluir</button>
+            </form>
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan='4'>Nenhum produto cadastrado.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

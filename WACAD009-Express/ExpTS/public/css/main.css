@@ -1,0 +1,20 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.hb1-title {
+  color: #4d926f;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+}
+
+.product-form {
+  max-width: 640px;
+}
+
+.product-details {
+  max-width: 720px;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+}

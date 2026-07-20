@@ -1,0 +1,11 @@
+<h1 class='h2'>Detalhes do produto</h1>
+<dl class='row product-details'>
+  <dt class='col-sm-3'>Nome</dt>
+  <dd class='col-sm-9'>{{produto.nome}}</dd>
+  <dt class='col-sm-3'>Preço</dt>
+  <dd class='col-sm-9'>R$ {{produto.preco}}</dd>
+  <dt class='col-sm-3'>Estoque</dt>
+  <dd class='col-sm-9'>{{produto.estoque}}</dd>
+</dl>
+<a class='btn btn-primary' href='/produto/update/{{produto.id}}'>Editar</a>
+<a class='btn btn-outline-secondary' href='/produto'>Voltar</a>

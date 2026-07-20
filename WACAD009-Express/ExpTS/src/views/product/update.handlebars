@@ -1,0 +1,45 @@
+<h1 class='h2'>Editar produto</h1>
+<form
+  action='/produto/update/{{produto.id}}'
+  method='post'
+  class='product-form'
+>
+  <div class='mb-3'>
+    <label class='form-label' for='nome'>Nome</label>
+    <input
+      class='form-control'
+      id='nome'
+      name='nome'
+      value='{{produto.nome}}'
+      required
+    />
+  </div>
+  <div class='mb-3'>
+    <label class='form-label' for='preco'>Preço</label>
+    <input
+      class='form-control'
+      id='preco'
+      name='preco'
+      type='number'
+      min='0'
+      step='0.01'
+      value='{{produto.preco}}'
+      required
+    />
+  </div>
+  <div class='mb-3'>
+    <label class='form-label' for='estoque'>Estoque</label>
+    <input
+      class='form-control'
+      id='estoque'
+      name='estoque'
+      type='number'
+      min='0'
+      step='1'
+      value='{{produto.estoque}}'
+      required
+    />
+  </div>
+  <button class='btn btn-primary' type='submit'>Salvar alterações</button>
+  <a class='btn btn-outline-secondary' href='/produto'>Cancelar</a>
+</form>

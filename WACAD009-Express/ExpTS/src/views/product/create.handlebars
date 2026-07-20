@@ -1,0 +1,33 @@
+<h1 class='h2'>Novo produto</h1>
+<form action='/produto/create' method='post' class='product-form'>
+  <div class='mb-3'>
+    <label class='form-label' for='nome'>Nome</label>
+    <input class='form-control' id='nome' name='nome' required />
+  </div>
+  <div class='mb-3'>
+    <label class='form-label' for='preco'>Preço</label>
+    <input
+      class='form-control'
+      id='preco'
+      name='preco'
+      type='number'
+      min='0'
+      step='0.01'
+      required
+    />
+  </div>
+  <div class='mb-3'>
+    <label class='form-label' for='estoque'>Estoque</label>
+    <input
+      class='form-control'
+      id='estoque'
+      name='estoque'
+      type='number'
+      min='0'
+      step='1'
+      required
+    />
+  </div>
+  <button class='btn btn-primary' type='submit'>Salvar</button>
+  <a class='btn btn-outline-secondary' href='/produto'>Cancelar</a>
+</form>

@@ -1,0 +1,17 @@
+{
+  "name": "express-hello-world",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "start:prod": "node src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
+
