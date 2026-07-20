@@ -1,0 +1,85 @@
+name: webacademy-livros
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: webacademy-livros-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: senhasegura
+      MYSQL_DATABASE: livraria
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./bd/script.sql:/docker-entrypoint-initdb.d/01-script.sql:ro
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent && mysql -uroot -p$$MYSQL_ROOT_PASSWORD -D $$MYSQL_DATABASE -e "SELECT 1 FROM livros LIMIT 1" >/dev/null 2>&1
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      - livros_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: webacademy-livros-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    ports:
+      - "4444:4444"
+    volumes:
+      - backend_logs:/app/log
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - livros_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: webacademy-livros-frontend
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - livros_network
+
+  phpmyadmin:
+    image: phpmyadmin:5.2-apache
+    container_name: webacademy-livros-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: senhasegura
+    ports:
+      - "8080:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - livros_network
+
+volumes:
+  mysql_data:
+    name: webacademy_livros_mysql_data
+  backend_logs:
+    name: webacademy_livros_backend_logs
+
+networks:
+  livros_network:
+    name: webacademy_livros_network
+    driver: bridge

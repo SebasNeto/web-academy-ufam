@@ -1,0 +1,21 @@
+# 1. Construir as imagens.
+docker build -f Dockerfile.backend -t webacademy-back .
+docker build -f Dockerfile.frontend -t webacademy-front .
+
+# 2. Criar uma rede para a comunicação entre os conteineres.
+docker network create -d bridge rede_cord_cont
+
+# 3. Iniciar primeiro o backend. 
+docker run -d --name back --network rede_cord_cont -p 4000:4000 webacademy-back
+
+# 4. Iniciar o frontend.
+docker run -d --name front --network rede_cord_cont -p 3000:3000 webacademy-front
+
+# 5. Verificar se os dois conteineres estão executando.
+docker ps
+
+# 6. Acompanhar as mensagens recebidas pelo backend.
+docker logs -f back
+
+# No navegador:
+# http://localhost:3000
